@@ -22,6 +22,9 @@ const otpTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Agregar índice TTL
+otpTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+
 const OtpToken = mongoose.model("OtpToken", otpTokenSchema);
 
 export default OtpToken;
