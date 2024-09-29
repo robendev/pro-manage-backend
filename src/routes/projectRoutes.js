@@ -2,12 +2,12 @@ import { Router } from "express";
 
 import { ProjectController } from "../controllers/ProjectController.js";
 import { authenticate } from "../middlewares/validationAuth.js";
-import { validateProjectAccess } from "../middlewares/validationProject.js";
+import { validateProjectAccessForParams } from "../middlewares/validationProject.js";
 
 const router = Router();
 
 router.use(authenticate);
-router.param("projectId", validateProjectAccess);
+router.param("projectId", validateProjectAccessForParams);
 
 router.post("/", ProjectController.createProject);
 router.get("/", ProjectController.getAllProjects);

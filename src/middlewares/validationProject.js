@@ -1,6 +1,7 @@
 import Project from "../models/Project.js";
+import CustomError from "../errors/CustomErrors.js";
 
-export const validateProjectAccess = async (req, res, next) => {
+export const validateProjectAccessForParams = async (req, res, next) => {
   const { projectId } = req.params;
   try {
     const project = await Project.findOne({
