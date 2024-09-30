@@ -4,6 +4,7 @@ import { param, body } from "express-validator";
 import { AuthController } from "../controllers/AuthController.js";
 
 import validationResultRequest from "../middlewares/validationExpressValidator.js";
+import CustomError from "../errors/CustomErrors.js";
 
 const router = Router();
 
@@ -42,6 +43,16 @@ router.post(
     .withMessage(
       "La contraseña debe contener al menos un carácter especial (@, $, !, %, *, ?, &, #)."
     ),
+  body("confirmPassword")
+    .trim()
+    .notEmpty()
+    .withMessage("La confirmación de la contraseña es obligatoria.")
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new CustomError("Las contraseñas no coinciden.", 400);
+      }
+      return true;
+    }),
   validationResultRequest,
   AuthController.createAccount
 );
