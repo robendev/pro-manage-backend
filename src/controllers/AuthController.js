@@ -3,7 +3,10 @@ import OtpToken from "../models/OtpToken.js";
 import CustomError from "../errors/CustomErrors.js";
 import generateOtpToken6Digits from "../utils/otpToken.js";
 import generateJsonWebToken from "../utils/jsonwebtoken.js";
-import { sendConfirmationEmailAsync, sendManualVerificationEmailAsync, sendNewVerificationEmailAsync } from "../emails/AuthEmailAsync.js";
+import { sendConfirmationEmailAsync, 
+  sendManualVerificationEmailAsync, 
+  sendNewVerificationEmailAsync, 
+  sendRecoveryVerificationEmailAsync } from "../emails/AuthEmailAsync.js";
 
 export class AuthController {
   static createAccount = async (req, res, next) => {
@@ -116,10 +119,13 @@ export class AuthController {
     const { email } = req.body;
     try {
       const isUserPresent = await User.findOne({
-        $and: [{ email }, { isActive: false }],
+        $and: [{ email }],
       });
       if (!isUserPresent) {
         throw new CustomError("No se encontró ninguna cuenta con ese correo electrónico.", 404);
+      }
+      if (isUserPresent.isActive) {
+        throw new CustomError("Tu cuenta se encuentra activa, si no puedes iniciar sesión intenta recuperar tu cuenta", 409)
       }
       const currentOtpToken6Digits = await OtpToken.findOne({
         userId: isUserPresent._id,
@@ -162,7 +168,8 @@ export class AuthController {
         expiresAt: new Date(Date.now() + 10 * 60 * 1000),
       });
       await otpToken.save();
-      sendRecoveryVerificationEmailAsync({
+      sendRecoveryVerificationEmailAsync
+      ({
         username: isUserPresent.username,
         email: isUserPresent.email,
         otpToken6Digits: otpToken.otpToken6Digits,

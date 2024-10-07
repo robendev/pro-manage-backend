@@ -148,6 +148,16 @@ router.post(
     .withMessage(
       "La contraseña debe contener al menos un carácter especial (@, $, !, %, *, ?, &, #)."
     ),
+    body("confirmPassword")
+    .trim()
+    .notEmpty()
+    .withMessage("La confirmación de la contraseña es obligatoria.")
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new CustomError("Las contraseñas no coinciden.", 400);
+      }
+      return true;
+    }),
   validationResultRequest,
   AuthController.resetPassword
 );
