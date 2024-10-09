@@ -230,4 +230,11 @@ export class AuthController {
       next(err);
     }
   };
+  static validateUser = async (req, res, next) => {
+    try {
+      return res.json(req.user)
+    } catch (err) {
+      next(err);
+    }
+  };
 }

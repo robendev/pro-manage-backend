@@ -5,6 +5,7 @@ import { AuthController } from "../controllers/AuthController.js";
 
 import validationResultRequest from "../middlewares/validationExpressValidator.js";
 import CustomError from "../errors/CustomErrors.js";
+import { authenticate } from "../middlewares/validationAuth.js";
 
 const router = Router();
 
@@ -161,5 +162,9 @@ router.post(
   validationResultRequest,
   AuthController.resetPassword
 );
+router.get("/validate-user",
+  authenticate,
+  AuthController.validateUser
+)
 
 export default router;
