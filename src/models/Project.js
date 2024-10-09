@@ -16,7 +16,8 @@ const projectSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
     },
     startDate: { type: Date, default: Date.now },
-    endDate: { type: Date },
+    endDate: { type: Date, default: null },
+    // endDate: { type: Date, default: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }, // Establece una fecha predeterminada (por ejemplo, una semana después de la creación)
     status: {
       default: "pending",
       enum: ["pending", "in-progress", "completed"],

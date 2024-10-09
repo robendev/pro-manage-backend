@@ -19,9 +19,9 @@ router.post(
     .withMessage("El nombre del proyecto es obligatorio.")
     .isLength({ min: 3 })
     .withMessage("El nombre del proyecto debe tener al menos 3 caracteres.")
-    .matches(/^[a-zA-Z0-9_]+$/)
+    .matches(/^[a-zA-Z0-9_ .-áéíóúÁÉÍÓÚüÜñÑ]+$/)
     .withMessage(
-      "El nombre del proyecto solo puede contener letras, números y guiones bajos."
+      "El nombre del proyecto solo puede contener letras, números, espacios, guiones, puntos, guiones bajos y caracteres acentuados."
     ),
   body("projectDescription")
     .trim()
