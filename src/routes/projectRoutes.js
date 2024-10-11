@@ -19,7 +19,7 @@ router.post(
     .withMessage("El nombre del proyecto es obligatorio.")
     .isLength({ min: 3 })
     .withMessage("El nombre del proyecto debe tener al menos 3 caracteres.")
-    .matches(/^[a-zA-Z0-9_ .-áéíóúÁÉÍÓÚüÜñÑ]+$/)
+    .matches(/^[a-zA-Z0-9_ .áéíóúÁÉÍÓÚüÜñÑ-]+$/)
     .withMessage(
       "El nombre del proyecto solo puede contener letras, números, espacios, guiones, puntos, guiones bajos y caracteres acentuados."
     ),
@@ -27,6 +27,11 @@ router.post(
     .trim()
     .notEmpty()
     .withMessage("La descripción del proyecto es obligatoria."),
+  body("startDate")
+    .optional()
+    .isISO8601()
+    .toDate()
+    .withMessage("La fecha de inicio debe ser una fecha válida."),
   body("endDate")
     .optional()
     .isISO8601()

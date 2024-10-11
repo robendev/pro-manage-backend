@@ -2,13 +2,11 @@ import Project from "../models/Project.js";
 
 export class ProjectController {
   static createProject = async (req, res, next) => {
-    const { projectName, projectDescription } = req.body;
     try {
-      const project = new Project({
-        projectName,
-        projectDescription,
-        createdBy: req.user._id,
-      });
+      const project = new Project(
+        req.body
+      );
+      project.createdBy = req.user._id;
       await project.save();
       res.status(201).json({ message: "Proyecto creado exitosamente." });
     } catch (err) {
