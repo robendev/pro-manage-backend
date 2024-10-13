@@ -3,9 +3,7 @@ import Project from "../models/Project.js";
 export class ProjectController {
   static createProject = async (req, res, next) => {
     try {
-      const project = new Project(
-        req.body
-      );
+      const project = new Project(req.body);
       project.createdBy = req.user._id;
       await project.save();
       res.status(201).json({ message: "Proyecto creado exitosamente." });

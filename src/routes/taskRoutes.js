@@ -21,14 +21,19 @@ router.post(
     .withMessage("El nombre de la tarea es obligatorio.")
     .isLength({ min: 3 })
     .withMessage("El nombre de la tarea debe tener al menos 3 caracteres.")
-    .matches(/^[a-zA-Z0-9_]+$/)
+    .matches(/^[a-zA-Z0-9_ .áéíóúÁÉÍÓÚüÜñÑ-]+$/)
     .withMessage(
-      "El nombre de la tarea solo puede contener letras, números y guiones bajos."
+      "El nombre de la tarea solo puede contener letras, números, espacios, guiones, puntos, guiones bajos y caracteres acentuados."
     ),
   body("taskDescription")
     .trim()
     .notEmpty()
     .withMessage("La descripción de la tarea es obligatoria."),
+  body("startDate")
+    .optional()
+    .isISO8601()
+    .toDate()
+    .withMessage("La fecha de inicio debe ser una fecha válida."),
   body("endDate")
     .optional()
     .isISO8601()

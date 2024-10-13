@@ -3,14 +3,9 @@ import CustomError from "../errors/CustomErrors.js";
 
 export class TaskController {
   static createTask = async (req, res, next) => {
-    const { taskName, taskDescription } = req.body;
     try {
-      const task = new Task({
-        taskName,
-        taskDescription,
-        createdBy: req.user._id,
-        projectId: req.project._id,
-      });
+      const task = new Task(req.body);
+      task.createdBy = req.user._id;
       req.project.tasks.push(task._id);
       await Promise.allSettled([task.save(), req.project.save()]);
       res.status(201).json({ message: "Tarea creada exitosamente." });
