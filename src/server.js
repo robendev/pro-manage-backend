@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
+import collaboratorRoutes from "./routes/collaboratorsRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
 import errorHandler from "./middlewares/errorHandler.js";
@@ -23,6 +24,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
+app.use("/api/collaborators", collaboratorRoutes)
 app.use("/api/tasks", taskRoutes);
 
 // Middleware para manejar errores globales

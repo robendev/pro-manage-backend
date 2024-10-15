@@ -15,6 +15,9 @@ export class ProjectController {
     try {
       const projects = await Project.find({
         $and: [{ createdBy: req.user._id }],
+      }).populate({
+        path: "createdBy",
+        select: "_id username email"
       });
       res.json(projects);
     } catch (err) {
