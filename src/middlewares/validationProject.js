@@ -5,7 +5,11 @@ export const validateProjectAccessForParams = async (req, res, next) => {
   const { projectId } = req.params;
   try {
     const project = await Project.findOne({
-      $and: [{ createdBy: req.user._id }, { _id: projectId }],
+      _id: projectId,
+      $or: [
+          { createdBy: req.user._id },
+          { collaborators: { $in: [req.user._id] } }
+        ],
     }).populate([
       {
         path: "createdBy",

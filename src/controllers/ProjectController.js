@@ -14,7 +14,10 @@ export class ProjectController {
   static getAllProjects = async (req, res, next) => {
     try {
       const projects = await Project.find({
-        $and: [{ createdBy: req.user._id }],
+        $or: [
+          { createdBy: req.user._id },
+          { collaborators: { $in: [req.user._id] } }
+        ],
       }).populate({
         path: "createdBy",
         select: "_id username email"
